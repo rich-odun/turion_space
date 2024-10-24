@@ -28,6 +28,12 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+    
+    - name: Lint Terraform
+      uses: actionshub/terraform-lint@main
+    
+    - name: tfsec
+      uses: aquasecurity/tfsec-action@v1.0.0
 
     - name: Caching Terraform plugins and modules
       uses: terraform-cache/terraform-cache@v1 #This action allows caching Terraform providers to improve workflow execution time.
