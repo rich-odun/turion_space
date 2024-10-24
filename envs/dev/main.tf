@@ -9,7 +9,7 @@ terraform {
 terraform {
   backend "s3" {
     bucket = "turion-tfbucket"
-    key = var.key # change the path in the variables.tf to fit the environment
+    key = "dev/terraform.state" # change the path in the variables.tf to fit the environment
     region = "us-east-1"
     encrypt = true 
   }
