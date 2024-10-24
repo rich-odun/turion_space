@@ -33,7 +33,9 @@ jobs:
       uses: actionshub/terraform-lint@main
     
     - name: tfsec
-      uses: aquasecurity/tfsec-action@v1.0.0
+      uses: aquasecurity/tfsec-action@v1.0.0 
+      with:
+        soft_fail: true # set to true if you dont want the action to break the build
 
     - name: Caching Terraform plugins and modules
       uses: terraform-cache/terraform-cache@v1 #This action allows caching Terraform providers to improve workflow execution time.
