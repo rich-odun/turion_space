@@ -1,4 +1,4 @@
-name: Set up EKS for Dev With Terraform
+name: EKS Deployment
 
 on: 
   # push:
