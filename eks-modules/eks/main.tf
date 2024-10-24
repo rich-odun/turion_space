@@ -2,7 +2,7 @@
 resource "aws_eks_cluster" "eks_cluster" {
   name     = var.cluster_name
   role_arn = aws_iam_role.eks_cluster_role.arn
-  #role_arn = var.eks_cluster_role_arn
+
 
   version = "1.28"
 
@@ -10,7 +10,10 @@ resource "aws_eks_cluster" "eks_cluster" {
     subnet_ids = [
       aws_subnet.eks_private_1.id,
       aws_subnet.eks_private_2.id,
-      aws_subnet.eks_private_3.id
+      aws_subnet.eks_private_3.id,
+      aws_subnet.eks_public_1.id,
+      aws_subnet.eks_public_2.id,
+      aws_subnet.eks_public_3.id
     ]
   }
 
@@ -33,9 +36,7 @@ resource "aws_iam_openid_connect_provider" "eks" {
   url             = data.tls_certificate.eks.url
 }
 
-
 # Provides an EKS Node Group 
-
 resource "aws_eks_node_group" "eks_node_group" {
   cluster_name    = aws_eks_cluster.eks_cluster.name
   node_group_name = var.node_group_name
@@ -65,16 +66,10 @@ resource "aws_eks_node_group" "eks_node_group" {
     aws_iam_role_policy_attachment.ec2_container_registry_readonly,
   ]
 }
-
 # Extra resources 
 resource "aws_ebs_volume" "volume_space"{
     availability_zone = "us-east-1a"
     size = 40
     encrypted = true
     type = "gp2"
-    #kms_key_id = aws_kms_key.ebs_encryption_key.arn
 }
-
-
-
-

@@ -8,8 +8,8 @@ terraform {
 }
 terraform {
   backend "s3" {
-    bucket = "turion-dev" # change this
-    key = "terraform.tfstate"
+    bucket = "turion-tfbucket"
+    key = var.key # change the path in the variables.tf to fit the environment
     region = "us-east-1"
     encrypt = true 
   }
@@ -17,7 +17,6 @@ terraform {
 
 provider "aws" {
     region = var.region 
-    
     access_key = var.aws_access_key_id
     secret_key = var.aws_secret_access_key
 }
@@ -54,6 +53,4 @@ module "eks_cluster" {
   on_prem_vpc_cidr = var.on_prem_vpc_cidr 
   on_prem_vpc_tags = var.on_prem_vpc_tags
   eks_vpc_tags = var.eks_vpc_tags
-  
 }
-

@@ -1,3 +1,8 @@
+variable "key" {
+   description = "Path within the bucket where the state is stored (e.g., dev , stage, prod environment)"
+   type = string 
+   default = "dev/terraform.state"
+}
 variable "region" {
     description = "Region for resources"
     type = string 
@@ -74,11 +79,6 @@ variable "log_group_name" {
     default = "/aws/eks/cluster-logs-dev"
 }
 
-# variable "retention_in_days" {
-#     description = "Rentention days for the EKS Cluster log group"
-#     type = number
-#     default = 30
-# }
 
 variable "alarm_topic_name" {
     description = "SNS Topic name for CloudWatch"
@@ -167,26 +167,6 @@ variable "on_prem_vpc_cidr" {
     default = "10.1.0.0/16"
 
 }
-#"10.1.1.0/24"
-# variable "eks_public_subnets_cidr" {
-#     description = "Cidr Block public Subnet for eks"
-#     type = list(string) 
-#     default = ["10.3.1.0/24", "10.1.2.0/24", "10.1.3.0/24"]
-# }
-
-#"10.1.2.0/24"
-# variable "eks_private_subnets_cidr" {
-#     description = "Cidr Block private Subnet for eks"
-#     type = list(string)
-#     default = ["10.3.4.0/24", "10.1.5.0/24", "10.1.6.0/24"]
-# }
-
-# 10.2.1.0/24
-# variable "onprem_subnet_cidr" {
-#     description = "Cidr Block Subnet for onprem"
-#     type = string 
-#     default = "10.2.1.0/24"
-# }
 
 variable "eks_vpc_tags" {
   type = string 
