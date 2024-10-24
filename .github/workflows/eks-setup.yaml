@@ -30,14 +30,8 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Caching Terraform plugins and modules
-      uses: terraform-cache/terraform-cache@v1
-      # with:
-      #   path: |
-      #     ~/.terraform.d/plugin-cache
-      #     .terraform
-      #   key: ${{ runner.os }}-terraform-${{ hashFiles('**/*.tf') }}
-      #   restore-keys: |
-      #     ${{ runner.os }}-terraform-
+      uses: terraform-cache/terraform-cache@v1 #This action allows caching Terraform providers to improve workflow execution time.
+
 
     - name: Initialize Terraform
       run: terraform init 
@@ -48,5 +42,5 @@ jobs:
       working-directory: envs/dev
 
     - name: Apply Terraform (for dev)
-      run: terraform destroy -auto-approve
+      run: terraform apply -auto-approve
       working-directory: envs/dev
