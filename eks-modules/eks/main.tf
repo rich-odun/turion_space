@@ -41,7 +41,7 @@ resource "aws_eks_node_group" "eks_node_group" {
   cluster_name    = aws_eks_cluster.eks_cluster.name
   node_group_name = var.node_group_name
   node_role_arn   = aws_iam_role.eks_node_group_role.arn
-  subnet_ids      = [
+  subnet_ids = [
     aws_subnet.eks_private_1.id,
     aws_subnet.eks_private_2.id,
     aws_subnet.eks_private_3.id
@@ -67,9 +67,9 @@ resource "aws_eks_node_group" "eks_node_group" {
   ]
 }
 # Extra resources 
-resource "aws_ebs_volume" "volume_space"{
-    availability_zone = "us-east-1a"
-    size = 40
-    encrypted = true
-    type = "gp2"
+resource "aws_ebs_volume" "volume_space" {
+  availability_zone = "us-east-1a"
+  size              = 40
+  encrypted         = true
+  type              = "gp2"
 }

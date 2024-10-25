@@ -6,7 +6,7 @@ data "aws_iam_policy_document" "assume_role" {
     effect = "Allow"
 
     principals {
-      type = "Service"
+      type        = "Service"
       identifiers = ["eks.amazonaws.com"]
     }
     actions = ["sts:AssumeRole"]
@@ -16,13 +16,13 @@ data "aws_iam_policy_document" "assume_role" {
 # IAM Role for EKS Cluster Plane 
 
 resource "aws_iam_role" "eks_cluster_role" {
-    name = var.eks_cluster_role_name
-    assume_role_policy = data.aws_iam_policy_document.assume_role.json
+  name               = var.eks_cluster_role_name
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
 resource "aws_iam_role_policy_attachment" "eks_cluster_policy_attachment" {
-    policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-    role = aws_iam_role.eks_cluster_role.name 
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+  role       = aws_iam_role.eks_cluster_role.name
 }
 
 resource "aws_iam_role_policy_attachment" "eks_service_policy_attachment" {
@@ -38,20 +38,20 @@ resource "aws_iam_role_policy_attachment" "eks-AmazonEKSVPCResourceController" {
 
 # IAM Role for Worker node
 resource "aws_iam_role" "eks_node_group_role" {
-    name = var.eks_node_group_role_name
+  name = var.eks_node_group_role_name
 
-    assume_role_policy = jsonencode({
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Principal": {
-                    "Service": "ec2.amazonaws.com"
-                },
-                "Action": "sts:AssumeRole"
-            }
-        ]
-    })
+  assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "ec2.amazonaws.com"
+        },
+        "Action" : "sts:AssumeRole"
+      }
+    ]
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "eks_worker_node_policy_attachment" {
@@ -70,20 +70,20 @@ resource "aws_iam_role_policy_attachment" "ec2_container_registry_readonly" {
 }
 
 resource "aws_iam_instance_profile" "eks_node_instance_profile" {
-    name = var.eks_node_group_profile
-    role = aws_iam_role.eks_node_group_role.name
+  name = var.eks_node_group_profile
+  role = aws_iam_role.eks_node_group_role.name
 }
 
 # Policy For volume creation and attachment
 resource "aws_iam_role_policy" "eks_node_group_volume_policy" {
-  name   = var.eks_node_group_volume_policy_name
-  role   = aws_iam_role.eks_node_group_role.name
+  name = var.eks_node_group_volume_policy_name
+  role = aws_iam_role.eks_node_group_role.name
   policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
+    "Version" : "2012-10-17",
+    "Statement" : [
       {
-        "Effect": "Allow",
-        "Action": [
+        "Effect" : "Allow",
+        "Action" : [
           "ec2:CreateTags",
           "ec2:DescribeTags",
           "ec2:DescribeVolumes",
@@ -91,7 +91,7 @@ resource "aws_iam_role_policy" "eks_node_group_volume_policy" {
           "ec2:CreateVolume",
           "ec2:AttachVolume"
         ],
-        "Resource": "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:volume/*"
+        "Resource" : "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:volume/*"
       }
     ]
   })
@@ -103,15 +103,15 @@ resource "aws_iam_role" "cloudwatch_role" {
   name = var.cloudwatch_role_name
 
   assume_role_policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
+    "Version" : "2012-10-17",
+    "Statement" : [
       {
-        "Action": "sts:AssumeRole",
-        "Principal": {
-          "Service": "cloudwatch.amazonaws.com"
+        "Action" : "sts:AssumeRole",
+        "Principal" : {
+          "Service" : "cloudwatch.amazonaws.com"
         },
-        "Effect": "Allow",
-        "Sid": ""
+        "Effect" : "Allow",
+        "Sid" : ""
       }
     ]
   })

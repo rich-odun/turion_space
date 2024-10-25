@@ -4,7 +4,7 @@ output "endpoint" {
 }
 
 output "eks_cluster_name" {
-    value = aws_eks_cluster.eks_cluster.name
+  value = aws_eks_cluster.eks_cluster.name
 }
 
 output "kubeconfig-certificate-authority-data" {
@@ -12,12 +12,12 @@ output "kubeconfig-certificate-authority-data" {
 }
 
 output "eks_cluster_role_arn" {
-  value = aws_iam_role.eks_cluster_role.arn
+  value       = aws_iam_role.eks_cluster_role.arn
   description = "The ARN of the IAM role for the EKS cluster"
 }
 
 output "eks_cluster_autoscaler_role_arn" {
-  value = aws_iam_role.eks_cluster_autoscaler_role.arn
+  value       = aws_iam_role.eks_cluster_autoscaler_role.arn
   description = "The ARN of the IAM role for the EKS cluster autoscaler"
 }
 
@@ -33,6 +33,6 @@ output "cloudwatch_log_group_name" {
 }
 
 output "eks_vpc_id" {
-  value = aws_vpc.eks_vpc.id
+  value       = aws_vpc.eks_vpc.id
   description = "The ID of the EKS VPC"
 }
