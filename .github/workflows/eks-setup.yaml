@@ -50,5 +50,5 @@ jobs:
       working-directory: envs/dev
 
     - name: Apply Terraform (for dev)
-      run: terraform apply -auto-approve
+      run: terraform destroy -auto-approve
       working-directory: envs/dev
