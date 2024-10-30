@@ -1,0 +1,54 @@
+name: EKS Deployment
+
+on: 
+  # push:
+  #   branches:
+  #     - main  # Adjust to the branch you're using for your dev environment (e.g., 'dev' if necessary)
+  workflow_dispatch:  # Allows manual triggering of the workflow from GitHub
+
+env: 
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+
+jobs:
+  LogInToAWS:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+  TerraformDeployment:
+    runs-on: ubuntu-latest
+    needs: LogInToAWS
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Lint Terraform
+      uses: actionshub/terraform-lint@main
+    
+    - name: Caching Terraform plugins and modules
+      uses: terraform-cache/terraform-cache@v1 #This action allows caching Terraform providers to improve workflow execution time.
+
+
+    - name: Initialize Terraform
+      run: terraform init 
+      working-directory: envs/dev
+
+    - name: Terraform Plan
+      run: terraform plan 
+      working-directory: envs/dev
+
+    # - name: Apply Terraform (for dev)
+    #   run: terraform apply -auto-approve
+    #   working-directory: envs/dev
+      
+    #Destroy Infra 
+    - name: Destroy Terraform (for dev)
+      run: terraform destroy -auto-approve
+      working-directory: envs/dev
